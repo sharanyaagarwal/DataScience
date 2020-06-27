@@ -61,8 +61,17 @@ shinyUI(dashboardPage(
                     )
                 )
             ),
-            tabItem(tabName = "Statistics", 
+            tabItem(tabName = "Industry", 
                 "detail about what correlation is"
+            ),
+            tabItem(tabName = "Product", 
+                    "detail about what correlation is"
+            ),
+            tabItem(tabName = "Team", 
+                    "detail about what correlation is"
+            ),
+            tabItem(tabName = "Operations", 
+                    "detail about what correlation is"
             ),
             tabItem(tabName = "Data", 
                 tabBox(

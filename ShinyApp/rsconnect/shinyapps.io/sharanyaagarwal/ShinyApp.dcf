@@ -5,8 +5,8 @@ account: sharanyaagarwal
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2509625
-bundleId: 3321672
+bundleId: 3321722
 url: https://sharanyaagarwal.shinyapps.io/ShinyApp/
-when: 1593217565.75653
+when: 1593218890.56158
 asMultiple: FALSE
 asStatic: FALSE
