@@ -63,6 +63,18 @@ shinyUI(dashboardPage(
             ),
             tabItem(tabName = "Industry", 
                 headerPanel(h1("Identifying what the correlation between success and industry is", align='center')),
+                fluidRow(
+                    box("The wordcloud uses dataset Failed_Companies to identify the major problems faced by startups.
+                    This is based on the reasons provided by the companies for their closure. Based on the main problems
+                    that were identified in the wordcloud, we performed a deeper analysis to identify the distribution of
+                    reasons across the different companies.", width = 12),
+                ),
+                fluidRow(
+                    box(
+                        title = "Distribution by Industry Over The Years", width = 12, status = "warning",
+                        plotOutput("industryDistribution")
+                    )
+                )
             ),
             tabItem(tabName = "Product", 
                     "detail about what correlation is"

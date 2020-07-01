@@ -9,6 +9,10 @@ Failed_Companies_Sorted <- read_excel("Failed-Companies_Sorted.xlsx")
 Startup_Data <- read_csv("datasets_723212_1257436_CAX_Startup_Data.csv")
 
 dfReasonsFailure <- dplyr::count(Failed_Companies_Sorted, Reason_Failure_Categorized, sort = TRUE)
+dfYearDistinct <- Startup_Data %>% group_by(`year of founding`, `Focus functions of company`) %>% summarise(n = n())
+
+print(dfYearDistinct)
+
 
 getTermMatrix <- memoise(function(text){
   

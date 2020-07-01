@@ -77,4 +77,9 @@ shinyServer(function(input, output){
                                                       height = "600px", is3D = TRUE,
                                                       legend = {position = "bottom"}))
     )
+    
+    output$industryDistribution <- renderPlot(
+        ggplot(dfYearDistinct, aes(x = `year of founding`, y = `n`))+
+            geom_col(aes(fill = `Focus functions of company`), width = 0.7)    
+    )
 })
