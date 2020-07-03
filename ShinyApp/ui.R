@@ -74,6 +74,19 @@ shinyUI(dashboardPage(
                         title = "Distribution by Industry Over The Years", width = 12, status = "warning",
                         plotOutput("industryDistribution")
                     )
+                ),
+                fluidRow(
+                    column(width = 4,
+                       box( width = NULL,
+                           
+                       )
+                    ),
+                    column(width = 8,
+                       box(
+                           title = "Distribution by Industry Over The Years", width = NULL, status = "warning",
+                           htmlOutput("line")
+                       )
+                    )
                 )
             ),
             tabItem(tabName = "Product", 

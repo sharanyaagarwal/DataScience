@@ -82,4 +82,10 @@ shinyServer(function(input, output){
         ggplot(dfYearDistinct, aes(x = `year of founding`, y = `n`))+
             geom_col(aes(fill = `Focus functions of company`), width = 0.7)    
     )
+    
+    
+    filteredIndustry <- reactive({ dfSuccessByYearIndustry %>% filter(., `Focus functions of company` == input$industries)})
+    output$line <- renderGvis(
+        gvisLineChart(filteredIndustry(), "year of founding", c("success"))
+    )
 })
