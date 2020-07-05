@@ -45,8 +45,16 @@ shinyServer(function(input, output){
         )
     })
     
+    output$years <- renderInfoBox({
+        infoBox(
+            "Years Spanned",
+            "1999-2013", 
+            icon = icon("list"),
+            color = 'green'
+        )
+    })
+    
     terms <- reactive({
-        
         input$update
         
         text <- ""
@@ -83,9 +91,44 @@ shinyServer(function(input, output){
             geom_col(aes(fill = `Focus functions of company`), width = 0.7)    
     )
     
-    
     filteredIndustry <- reactive({ dfSuccessByYearIndustry %>% filter(., `Focus functions of company` == input$industries)})
     output$line <- renderGvis(
         gvisLineChart(filteredIndustry(), "year of founding", c("success"))
+    )
+    
+    filteredProdData <- reactive({ Startup_Data %>% filter(., `Dependent-Company Status` == input$successFail)})
+    output$productVsService <- renderGvis(
+        gvisPieChart(dplyr::count(filteredProdData(), `Product or service company?`, sort = TRUE), options = list(height = "300px", is3D = TRUE,
+                                                                                                            legend = {position = "bottom"}))
+    )
+    
+    output$cloudVsPlatform <- renderGvis(
+        gvisPieChart(dplyr::count(filteredProdData(), `Cloud or platform based serive/product?`, sort = TRUE), options = list(height = "300px", is3D = TRUE,
+                                                                                                                        legend = {position = "bottom"}))
+    )
+
+    output$machineLearning <- renderGvis(
+        gvisPieChart(dplyr::count(filteredProdData(), `Machine Learning based business`, sort = TRUE), options = list(height = "300px", is3D = TRUE,
+                                                                                                                legend = {position = "bottom"}))
+    )
+    
+    output$internetScore <- renderPlot(
+        ggplot(Startup_Data, aes(x=`Company_Name`, y=internet_score, label="Internet Score")) + 
+            geom_bar(stat='identity', aes(fill=score_type), width=.5)  +
+            scale_fill_manual(name="Internet Score", 
+                              labels = c("Above Average", "Below Average"), 
+                              values = c("above"="#00ba38", "below"="#f8766d")) + 
+            labs(subtitle="Normalised Internet Activity Score", 
+                 title= "Internet Actitivty") + coord_flip()
+    )
+    
+    output$ageOfCompany <- renderPlot(
+        if(input$radio == "success") {
+            ggplot(data=dfAgeCompany, aes(x=`ageCategory`, y=success, fill=`ageCategory`)) + geom_bar(stat="identity") + geom_bar(stat="identity")+theme_minimal()
+
+        }
+        else {
+            ggplot(data=dfAgeCompany, aes(x=`ageCategory`, y=failed, fill=`ageCategory`)) + geom_bar(stat="identity") + geom_bar(stat="identity")+theme_minimal()
+        }
     )
 })
