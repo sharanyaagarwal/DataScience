@@ -30,7 +30,39 @@ Startup_Data <- Startup_Data %>% mutate(ageCategory = case_when(`Age of company 
                                                                  `Age of company in years` >= 12 & `Age of company in years` <= 14 ~ '12-14',
                                                                  `Age of company in years` >= 15 ~ '15+'))
 
+Startup_Data <- Startup_Data %>% mutate(employeePerYear = case_when(`Employee Count` >= 0  & `Employee Count` <= 10 ~ '0-10',
+                                                                `Employee Count` >= 11  & `Employee Count` <= 20 ~ '11-20',
+                                                                `Employee Count` >= 21  & `Employee Count` <= 30 ~ '21-30',
+                                                                `Employee Count` >= 31 & `Employee Count` <= 40 ~ '31-40',
+                                                                `Employee Count` >= 41 & `Employee Count` <= 50 ~ '41-50',
+                                                                `Employee Count` >= 51 & `Employee Count` <= 60 ~ '51-60',
+                                                                `Employee Count` >= 61 & `Employee Count` <= 70 ~ '61-70',
+                                                                `Employee Count` >= 71 & `Employee Count` <= 80 ~ '71-80',
+                                                                `Employee Count` >= 81 & `Employee Count` <= 90 ~ '81-90',
+                                                                `Employee Count` >= 91 & `Employee Count` <= 100 ~ '91-100',
+                                                                `Employee Count` >= 101  & `Employee Count` <= 110 ~ '101-110',
+                                                                `Employee Count` >= 111  & `Employee Count` <= 120 ~ '111-120',
+                                                                `Employee Count` >= 121 & `Employee Count` <= 130 ~ '121-130',
+                                                                `Employee Count` >= 131 & `Employee Count` <= 140 ~ '131-140',
+                                                                `Employee Count` >= 141 & `Employee Count` <= 150 ~ '141-150',
+                                                                `Employee Count` >= 151 & `Employee Count` <= 160 ~ '151-160',
+                                                                `Employee Count` >= 161 & `Employee Count` <= 170 ~ '161-170',
+                                                                `Employee Count` >= 171 & `Employee Count` <= 180 ~ '171-180',
+                                                                `Employee Count` >= 181 & `Employee Count` <= 190 ~ '181-190',
+                                                                `Employee Count` >= 191 ~ '190+'))
+
 dfAgeCompany <- Startup_Data %>% group_by(`ageCategory`) %>% summarise(success = sum(`Dependent-Company Status` == "Success"), failed = sum(`Dependent-Company Status` == "Failed"))
+dfEmployeeYearly <- Startup_Data %>% group_by(`employeePerYear`) %>% summarise(success = sum(`Dependent-Company Status` == "Success"), failed = sum(`Dependent-Company Status` == "Failed"))
+
+gartner <- Startup_Data %>% group_by(`Gartner hype cycle stage`, `Dependent-Company Status`) %>% summarise(n = n())
+
+v <- Startup_Data %>% select(`Last Funding Amount`, `Dependent-Company Status`)
+
+yearsOfExp <- Startup_Data %>% group_by(`Average Years of experience for founder and co founder`, `Dependent-Company Status`) %>% summarise(n = n())
+higherEd <- Startup_Data %>% group_by(`Highest education`, `Dependent-Company Status`) %>% summarise(n = n())
+pastStartups <- Startup_Data %>% group_by(`Have been part of successful startups in the past?`, `Dependent-Company Status`) %>% summarise(n = n())
+
+teamScore <- Startup_Data %>% group_by(`Team Composition score`, `Dependent-Company Status`) %>% summarise(n = n())
 
 getTermMatrix <- memoise(function(text){
   

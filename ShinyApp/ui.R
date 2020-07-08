@@ -16,8 +16,8 @@ shinyUI(dashboardPage(
             menuItem("Factors", tabName = "Factors", icon = icon("map")), 
             menuItem("Industry", tabName = "Industry", icon = icon("map")),
             menuItem("Product", tabName = "Product", icon = icon("map"), menuSubItem("Product Analysis", tabName="prodAnalysis"), menuSubItem("Gartner Cycle", tabName="Gartner")), 
-            menuItem("Team", tabName = "Team", icon = icon("map")), 
-            menuItem("Operations", tabName = "Operations", icon = icon("map")), 
+            menuItem("Team", tabName = "Team", icon = icon("map"), menuSubItem("Founder Analysis", tabName="founderDetails"), menuSubItem("Team Analysis", tabName="teamDetails")), 
+            menuItem("Finances", tabName = "Finances", icon = icon("map")), 
             menuItem("Data", tabName = "Data", icon = icon("database"))
         )
     ), 
@@ -38,10 +38,9 @@ shinyUI(dashboardPage(
             tabItem(tabName = "Industry", 
                 headerPanel(h1("Identifying what the correlation between success and industry is", align='center')),
                 fluidRow(
-                    box("The wordcloud uses dataset Failed_Companies to identify the major problems faced by startups.
-                    This is based on the reasons provided by the companies for their closure. Based on the main problems
-                    that were identified in the wordcloud, we performed a deeper analysis to identify the distribution of
-                    reasons across the different companies.", width = 12),
+                    box("Using the Startup_Data dataset, we further look into the different industries in which startups have been launched over the years.
+                        We can then look at each industry and try to see if there is a clear trend between the success rate 
+                        over the years.", width = 12),
                 ),
                 fluidRow(
                     box(
@@ -52,7 +51,7 @@ shinyUI(dashboardPage(
                 fluidRow(
                     column(width = 4,
                        box( width = NULL, status = "success",
-                           selectizeInput("industries", "Choose a dataset:",
+                           selectizeInput("industries", "Choose an industry:",
                                 choices = c("Analytics", "Risk Management",
                                     "Marketing & Sales", "Operations",
                                     "Strategy", "Database Management",
@@ -67,7 +66,7 @@ shinyUI(dashboardPage(
                     ),
                     column(width = 8,
                        box(
-                           title = "Distribution by Industry Over The Years", width = NULL, status = "warning",
+                           title = "Success Rate by Industry Over Years", width = NULL, status = "warning",
                            htmlOutput("line")
                        )
                     )
@@ -106,12 +105,11 @@ shinyUI(dashboardPage(
                     )
             ),
             tabItem(tabName = "prodAnalysis",
-                headerPanel(h1("Identifying the Factors That Affect Startup Success", align='center')),
+                headerPanel(h1("Product or Service Analysis", align='center')),
                 fluidRow(
-                    box("The wordcloud uses dataset Failed_Companies to identify the major problems faced by startups.
-                    This is based on the reasons provided by the companies for their closure. Based on the main problems
-                    that were identified in the wordcloud, we performed a deeper analysis to identify the distribution of
-                    reasons across the different companies.", width = 12)
+                    box("We want to further understand if those companies whose products and services align with
+                        the technological trends are more successful or not. We will look to see if these startups
+                        use cloud technology, machine learning and if their business is internet dependent.", width = 12)
                 ),
                 fluidRow(
                     box(width = 12,
@@ -146,14 +144,51 @@ shinyUI(dashboardPage(
                 )
             ),
             tabItem(tabName = "Gartner",
-            ),
-            tabItem(tabName = "Team", 
-                headerPanel(h1("Identifying the Factors That Affect Startup Success", align='center')),
+                headerPanel(h1("Gartner Hype Cycle", align='center')),
                 fluidRow(
-                    box("The wordcloud uses dataset Failed_Companies to identify the major problems faced by startups.
-                    This is based on the reasons provided by the companies for their closure. Based on the main problems
-                    that were identified in the wordcloud, we performed a deeper analysis to identify the distribution of
-                    reasons across the different companies.", width = 12)
+                    column(width = 12,
+                           box( width = NULL, status = "success",
+                                title = "Average Years of Experience",
+                                plotOutput("gartner")
+                           )
+                    ),
+                ),
+                fluidRow(
+                    box("Gartner has developed a very sound technique for companies to assess if they are keeping up with
+                     the technological trends. The hype cycle is a graphical presentation of the maturity, adoption, 
+                    and social application of specific technologies. Here, we analyze if the phase of the hype cycle 
+                    that a startup is in affects its success.", width = 6),
+                    box( width = 6,
+                         img(src='GartnerHypeCycle.png', align = "center", width = "489px")
+                    )
+                ),
+            ),
+            tabItem(tabName = "founderDetails",
+                headerPanel(h1("Identifying how a Founder's Background Affects Startup Success", align='center')),
+                fluidRow(
+                    box("Here we want to further look at how a founder's background correlates with the success of
+                        the business. Does it matter how many years of experience they have? Does their educational
+                        background have an impact?", width = 12)
+                ),
+                fluidRow(
+                    column(width = 4,
+                       box( width = NULL, status = "success",
+                            title = "Average Years of Experience",
+                            plotOutput("yearsOfExpFounders")
+                       )
+                    ),
+                    column(width = 4,
+                       box( width = NULL, status = "success",
+                            title = "Highest Education",
+                            plotOutput("higherEd")
+                       )
+                    ),
+                    column(width = 4,
+                       box( width = NULL, status = "success",
+                            title = "Been part of successful startups?",
+                            plotOutput("pastStartups")
+                       )
+                    )
                 ),
                 fluidRow(
                     column(width = 2,
@@ -166,14 +201,59 @@ shinyUI(dashboardPage(
                     ),
                     column(width = 10,
                        box(
-                           title = "Reasons for Failure - Categorized", width = NULL, status = "primary",
+                           title = "Age of Company Correlation", width = NULL, status = "primary",
                            plotOutput("ageOfCompany")
                        )
                     )
                 )
             ),
-            tabItem(tabName = "Operations", 
-                    "detail about what correlation is"
+            tabItem(tabName = "teamDetails",
+                headerPanel(h1("Team Composition", align='center')),
+                fluidRow(
+                    box("How does the team structure affect the chance of success? Are larger teams more effective?
+                        The team composition score represents the diversity of the team. How many different skillsets
+                        does your team consist of? The team is what executes the vision and it is crucial to understand
+                        the impact of a talented group of people.", width = 12)
+                ),
+                fluidRow(
+                    column(width = 2,
+                           box( width = NULL, height = "463px", status = "success",
+                                title = "Success / Failed",
+                                "Select the success or failed Radio Button to see how the number of employees affects the success rate.",
+                                radioButtons("radio2", label = "",
+                                             choices = list("Success" = "success", "Failed" = "failed")),
+                           )
+                    ),
+                    column(width = 10,
+                           box(
+                               title = "Number of Employees Total", width = NULL, status = "primary",
+                               plotOutput("employeeYearly")
+                           )
+                    )
+                ),
+                fluidRow(
+                    column(width = 12,
+                           box(
+                               title = "Team Composition Score", width = NULL, status = "primary",
+                               plotOutput("teamScore")
+                           )
+                    )
+                )
+            ),
+            tabItem(tabName = "Finances", 
+                    headerPanel(h1("Finance and Investments", align='center')),
+                    fluidRow(
+                        box("It is difficult for new business to obtain the funds to execute their ideas. Finances is a 
+                            large part of setting up a company. Here we will understand if investments affect the success rate.", width = 12)
+                    ),
+                    fluidRow(
+                        column(width = 12,
+                               box(
+                                   title = "Funding Amount", width = NULL, status = "primary",
+                                   plotOutput("fundingAmount")
+                               )
+                        )
+                    ),
             ),
             tabItem(tabName = "Data", 
                 tabBox(

@@ -131,4 +131,47 @@ shinyServer(function(input, output){
             ggplot(data=dfAgeCompany, aes(x=`ageCategory`, y=failed, fill=`ageCategory`)) + geom_bar(stat="identity") + geom_bar(stat="identity")+theme_minimal()
         }
     )
+    
+    output$gartner <- renderPlot(
+        ggplot(data=gartner, aes(x=`Gartner hype cycle stage`, y=`n`, fill=`Dependent-Company Status`)) +
+            geom_bar(stat="identity", position=position_dodge()) + theme(legend.position="bottom")
+    )
+    
+    output$yearsOfExpFounders <- renderPlot(
+        ggplot(data=yearsOfExp, aes(x=`Average Years of experience for founder and co founder`, y=`n`, fill=`Dependent-Company Status`)) +
+            geom_bar(stat="identity", position=position_dodge()) + theme(legend.position="bottom")
+    )
+    
+    output$higherEd <- renderPlot(
+        ggplot(data=higherEd, aes(x=`Highest education`, y=`n`, fill=`Dependent-Company Status`)) +
+            geom_bar(stat="identity", position=position_dodge()) + theme(legend.position="bottom")
+    )
+    
+    output$pastStartups <- renderPlot(
+        ggplot(data=pastStartups, aes(x=`Have been part of successful startups in the past?`, y=`n`, fill=`Dependent-Company Status`)) +
+            geom_bar(stat="identity", position=position_dodge()) + theme(legend.position="bottom")
+    )
+    
+    output$employeeYearly <- renderPlot(
+        if(input$radio2 == "success") {
+            ggplot(data=dfEmployeeYearly, aes(x=`employeePerYear`, y=success, fill=`employeePerYear`)) + geom_bar(stat="identity") + geom_bar(stat="identity")+theme_minimal()
+            
+        }
+        else {
+            ggplot(data=dfEmployeeYearly, aes(x=`employeePerYear`, y=failed, fill=`employeePerYear`)) + geom_bar(stat="identity") + geom_bar(stat="identity")+theme_minimal()
+        }
+    )
+    
+    output$teamScore <- renderPlot(
+        ggplot(data=teamScore, aes(x=`Team Composition score`, y=`n`, fill=`Dependent-Company Status`)) +
+            geom_bar(stat="identity", position=position_dodge()) + theme(legend.position="bottom")
+    )
+    
+    output$fundingAmount <- renderPlot(
+        v %>% ggplot(aes(x=`Last Funding Amount`, fill=`Dependent-Company Status`)) +
+            ylim(0, 24) +
+            geom_histogram( color="#e9ecef", alpha=0.6, position = 'identity') +
+            scale_fill_manual(values=c("#69b3a2", "#404080")) +
+            labs(fill="")
+    )
 })
